@@ -1,0 +1,19 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  api:
+    build:
+      context: "C:\\Users\\artba\\RiderProjects\\AtonTest"
+      dockerfile: "API/Dockerfile"
+      target: "build"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app-1/bin/Debug/net9.0/API.dll"
+    environment: {}
+    image: "api:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\artba\\RiderProjects\\AtonTest\\API:/app-1:rw"
+    - "C:\\Users\\artba\\RiderProjects\\AtonTest:/src:rw"
+    - "C:\\Users\\artba\\.nuget\\packages:/root/.nuget/packages"
+    working_dir: "/app-1"
