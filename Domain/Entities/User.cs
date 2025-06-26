@@ -103,7 +103,7 @@ public class User
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be empty", nameof(name));
         
-        if (!Regex.IsMatch(name, @"^[a-zA-Zа-яА-Я]+$"))
+        if (!Regex.IsMatch(name, @"^[a-zA-Zа-яА-Я\s]+$"))
             throw new ArgumentException("Name can only contain latin and cyrillic letters", nameof(name));
         
         Name = name;

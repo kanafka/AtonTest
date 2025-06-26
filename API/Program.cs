@@ -1,9 +1,11 @@
-
 using Domain.Entytis;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using UserManagement.Application.Interfaces;
+using UserManagement.Application.Services;
 using UserManagement.Infrastructure.Data;
 using UserManagement.Infrastructure.Repositories;
+using UserManagement.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ builder.Services.AddDbContext<UserManagementDbContext>(options =>
 // DI
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 var app = builder.Build();
 
@@ -35,10 +38,9 @@ app.MapControllers();
 
 // Database initialization
 await InitializeDatabaseAsync(app);
-
-Console.WriteLine("Starting User Management API...");
-Console.WriteLine("Swagger UI available at: https://localhost:5001/");
 builder.WebHost.UseUrls("http://*:5000", "http://*:5001");
+Console.WriteLine("Starting User Management API...");
+Console.WriteLine("Swagger UI available at: https://localhost:5001/swagger");
 
 app.Run();
 
@@ -47,6 +49,7 @@ async Task InitializeDatabaseAsync(WebApplication app)
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<UserManagementDbContext>();
     var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
     
     try
     {
@@ -61,7 +64,7 @@ async Task InitializeDatabaseAsync(WebApplication app)
         if (adminExists == null)
         {
             Console.WriteLine("Creating default admin user...");
-            var admin = new User("Admin", "Admin123", "Administrator", Gender.Unknown, null, true, "System");
+            var admin = new User("Admin", passwordHasher.Hash("Admin123"), "Administrator", Gender.Unknown, null, true, "System");
             await userRepository.AddAsync(admin);
             await userRepository.SaveChangesAsync();
             

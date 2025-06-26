@@ -11,6 +11,6 @@ public interface IUserRepository
     Task<bool> LoginExistsAsync(string login, Guid? excludeUserId = null);
     Task AddAsync(User user);
     Task UpdateAsync(User user);
-    Task DeleteAsync(Guid id);
+    Task DeleteAsync(User user);
     Task SaveChangesAsync();
 }

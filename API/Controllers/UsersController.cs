@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using UserManagement.Application.DTOs;
+using UserManagement.Application.Interfaces;
+
+namespace UserManagement.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -178,7 +181,7 @@ public class UsersController : ControllerBase
     [HttpDelete("{login}")]
     public async Task<ActionResult> DeleteUser(
         string login,
-        [FromQuery] bool softDelete = true,
+        [FromQuery] bool softDelete,
         [FromHeader(Name = "AdminLogin")] string adminLogin,
         [FromHeader(Name = "AdminPassword")] string adminPassword)
     {

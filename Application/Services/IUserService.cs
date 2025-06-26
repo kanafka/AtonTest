@@ -1,5 +1,7 @@
 using UserManagement.Application.DTOs;
 
+namespace UserManagement.Application.Interfaces;
+
 public interface IUserService
 {
     Task<UserResponse> CreateUserAsync(CreateUserRequest request, string adminLogin, string adminPassword);
